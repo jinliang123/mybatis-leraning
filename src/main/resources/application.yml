@@ -14,3 +14,4 @@ mybatis:
 logging:
   level:
     org.apache.ibatis: debug
+    com.jinliang.mapper: debug
