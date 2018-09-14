@@ -40,19 +40,20 @@ public interface CreateMysqlTablesMapper {
 	 * 增加字段
 	 * @param tableMap
 	 */
-	public void addTableField(@Param("tableMap") Map<String, Object> tableMap);
-	
+//	public void addTableField(@Param("tableMap") Map<String, TableColumn> tableMap);
+	public void addTableField(@Param("tableMap") Map<String, List<TableColumn>> tableMap);
+
 	/**
 	 * 删除字段
 	 * @param tableMap
 	 */
-	public void removeTableField(@Param("tableMap") Map<String, Object> tableMap);
+	public void removeTableField(@Param("tableMap") Map<String, TableColumn> tableMap);
 	
 	/**
 	 * 修改字段
 	 * @param tableMap
 	 */
-	public void modifyTableField(@Param("tableMap") Map<String, Object> tableMap);
+	public void modifyTableField(@Param("tableMap") Map<String, List<TableColumn>> tableMap);
 	
 	/**
 	 * 删除主键约束，附带修改其他字段属性功能

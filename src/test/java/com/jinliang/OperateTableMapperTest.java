@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,6 +97,9 @@ public class OperateTableMapperTest {
     }
 
 
+    /**
+     * 创建表
+     */
     @Test
     public void test(){
         Map<String, List<TableColumn>> tableMap = new HashMap<>();
@@ -105,23 +109,92 @@ public class OperateTableMapperTest {
         tableColumn.setFieldType("BIGINT");
         tableColumn.setFieldLength(20);
         tableColumn.setFieldIsPrimaryKey(true);
-        tableColumn.setFieldIsNull(false);
+        tableColumn.setFieldIsAutoIncrement(true);
+//        tableColumn.setFieldIsNull(false);
 //        tableColumn.setFieldIsAutoIncrement(false);
         tableColumn.setFileTypeLength(1);
         tableColumn.setFieldComment("表ID，主键，供其他表做外键");
         tableColumn.setFieldDefaultValue("1");
         columns.add(tableColumn);
         TableColumn tableColumn1 = new TableColumn();
-        tableColumn.setFieldName("name");
-        tableColumn.setFieldType("VARCHAR");
-        tableColumn.setFieldLength(20);
-        tableColumn.setFieldIsNull(false);
-        tableColumn.setFileTypeLength(1);
-        tableColumn.setFieldComment("名称");
-        tableColumn.setFieldDefaultValue("jinliang");
+        tableColumn1.setFieldName("name");
+        tableColumn1.setFieldType("VARCHAR");
+        tableColumn1.setFieldLength(20);
+        tableColumn1.setFileTypeLength(1);
+        tableColumn1.setFieldComment("名称");
+        tableColumn1.setFieldDefaultValue("test");
+//        tableColumn1.setFieldIsNull(true);
+
+        tableColumn1.setFieldIsUnique(true);
         columns.add(tableColumn1);
         tableMap.put("iam_user",columns);
         tablesMapper.createTable(tableMap);
+    }
+
+    @Test
+    public void addCloumn(){
+        Map<String, List<TableColumn>> tableMap = new HashMap<>();
+//        Map<String,TableColumn> tableMap= new HashMap<>();
+        List<TableColumn> columns = new ArrayList<>();
+        TableColumn tableColumn = new TableColumn();
+        tableColumn.setFieldName("name");
+        tableColumn.setFieldType("varchar");
+        tableColumn.setFieldLength(2);
+        tableColumn.setFieldIsNull(true);
+//        tableColumn.setFieldIsAutoIncrement(false);
+        tableColumn.setFileTypeLength(1);
+        tableColumn.setFieldComment("姓名");
+        columns.add(tableColumn);
+        TableColumn tableColumn1 = new TableColumn();
+        tableColumn1.setFieldName("sex");
+        tableColumn1.setFieldType("INTEGER");
+        tableColumn1.setFieldLength(2);
+        tableColumn1.setFieldIsNull(true);
+//        tableColumn.setFieldIsAutoIncrement(false);
+        tableColumn1.setFileTypeLength(1);
+        tableColumn1.setFieldComment("性别");
+        columns.add(tableColumn1);
+        tableMap.put("iam_user",columns);
+//        tableMap.put("iam_user",tableColumn);
+        tablesMapper.addTableField(tableMap);
+    }
+
+
+
+    @Test
+    public void modifyCloumn(){
+        Map<String, List<TableColumn>> tableMap = new HashMap<>();
+//        Map<String,TableColumn> tableMap= new HashMap<>();
+        List<TableColumn> columns = new ArrayList<>();
+        TableColumn tableColumn = new TableColumn();
+        tableColumn.setFieldName("name");
+        tableColumn.setFieldType("INTEGER");
+        tableColumn.setFieldLength(2);
+        tableColumn.setFieldIsNull(true);
+//        tableColumn.setFieldIsAutoIncrement(false);
+        tableColumn.setFileTypeLength(1);
+        tableColumn.setFieldComment("年龄");
+        columns.add(tableColumn);
+        TableColumn tableColumn1 = new TableColumn();
+        tableColumn1.setFieldName("sex");
+        tableColumn1.setFieldType("INTEGER");
+        tableColumn1.setFieldLength(20);
+        tableColumn1.setFieldIsNull(true);
+//        tableColumn.setFieldIsAutoIncrement(false);
+        tableColumn1.setFileTypeLength(1);
+        tableColumn1.setFieldComment("性别");
+        columns.add(tableColumn1);
+        tableMap.put("iam_user",columns);
+//        tableMap.put("iam_user",tableColumn);
+        tablesMapper.modifyTableField(tableMap);
+    }
+
+    @Test
+    public void checkTable(){
+        String tableName = "iam_user";
+        int tableCountByTableName = tablesMapper.findTableCountByTableName(tableName);
+        System.out.println(tableCountByTableName);
+
     }
 
 }

@@ -1,7 +1,9 @@
 package com.jinliang.domain;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
- * description
+ *
  *
  * @author liang.jin@hand-china.com 2018/09/13 14:25
  */
@@ -42,13 +44,14 @@ public class TableColumn {
      * 字段类型长度 0 不指定长度 1 指定长度 2 带有精度类型
      */
     private int fileTypeLength;
+    /**
+     * 是否是唯一索引
+     */
     private boolean fieldIsUnique;
+    /**
+     * 字段备注
+     */
     private String fieldComment;
-
-
-    public TableColumn() {
-    }
-
 
 
     public String getFieldName() {

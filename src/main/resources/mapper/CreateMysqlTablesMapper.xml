@@ -28,11 +28,7 @@
 		<if test="!fields.fieldIsAutoIncrement and !fields.fieldIsNull and fields.fieldDefaultValue != 'NULL'">
 			DEFAULT #{fields.fieldDefaultValue} 
 		</if>
-		<!-- 不是自增长的才能有默认值 -->
-		<!-- 不是非空时，并且默认值不是NUll -->
-		<if test="!fields.fieldIsAutoIncrement and fields.fieldIsNull and fields.fieldDefaultValue != 'NULL'">
-			DEFAULT #{fields.fieldDefaultValue} 
-		</if>
+		<!--列备注-->
 		<if test="fields.fieldComment != null">
 			COMMENT '${fields.fieldComment}'
 		</if>
@@ -58,7 +54,7 @@
 	</select>
 	
 	<!-- 验证表是否存在 -->
-	<select id="findTableCountByTableName" resultType="int" parameterType="String">
+	<select id="findTableCountByTableName" resultType="java.lang.Integer" parameterType="String">
 		select count(1) from information_schema.tables
 		where table_name = #{tableName}
 	</select>
@@ -69,20 +65,39 @@
 	<!--</select>-->
 	<!---->
 	<!-- 增加字段 -->
+	<!--<select id="addTableField" parameterType="java.util.Map">-->
+	<!---->
+		<!--<foreach collection="tableMap" index="key" item="fields" separator=";">-->
+				<!--alter table `${key}` add -->
+				<!--<include refid="commonSql"></include>-->
+				<!--<if test="fields.fieldIsPrimaryKey">-->
+					<!--PRIMARY KEY -->
+				<!--</if>-->
+				<!--<if test="fields.fieldIsUnique">-->
+					<!--UNIQUE KEY -->
+				<!--</if>-->
+		<!--</foreach>-->
+		<!---->
+	<!--</select>-->
+
 	<select id="addTableField" parameterType="java.util.Map">
-	
-		<foreach collection="tableMap" index="key" item="fields" separator=";">
-				alter table `${key}` add 
+
+		<foreach collection="tableMap" index="key" item="value">
+			alter table `${key}` add (
+			<foreach collection="value" item="fields" separator=",">
 				<include refid="commonSql"></include>
-				<if test="fields.fieldIsKey">
-					PRIMARY KEY 
+				<if test="fields.fieldIsPrimaryKey">
+					PRIMARY KEY
 				</if>
 				<if test="fields.fieldIsUnique">
-					UNIQUE KEY 
+					UNIQUE KEY
 				</if>
+			</foreach>
+			);
 		</foreach>
-		
+
 	</select>
+
 	
 	<!-- 删除字段 -->
 	<select id="removeTableField" parameterType="java.util.Map">
@@ -94,15 +109,19 @@
 	<!-- 修改字段 -->
 	<select id="modifyTableField" parameterType="java.util.Map">
 	
-		<foreach collection="tableMap" index="key" item="fields" separator=";">
-				alter table `${key}` modify 
+		<foreach collection="tableMap" index="key" item="value">
+				alter table `${key}`
+		   <foreach collection="value" item="fields" separator=",">
+			    modify
 				<include refid="commonSql"></include>
-				<if test="fields.fieldIsKey">
+				<if test="fields.fieldIsPrimaryKey">
 					PRIMARY KEY 
 				</if>
 				<if test="fields.fieldIsUnique">
 					UNIQUE KEY 
 				</if>
+		   </foreach>
+
 		</foreach>
 		
 	</select>
