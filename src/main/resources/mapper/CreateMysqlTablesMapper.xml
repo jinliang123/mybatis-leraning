@@ -37,9 +37,9 @@
 	<!-- 创建表的 -->
 	<select id="createTable" parameterType="java.util.Map">
 
-		<foreach collection="tableMap" index="key" item="value">
-			create table `${key}`(
-			<foreach collection="value" item="fields" separator=",">
+		<foreach collection="tableMap" index="key" item="value" separator=";">
+			create table `${key}`
+			<foreach collection="value" item="fields" open="(" close=")"  separator=",">
 				<include refid="commonSql"></include>
 				<if test="fields.fieldIsPrimaryKey">
 					,PRIMARY KEY (`${fields.fieldName}`)
@@ -48,15 +48,14 @@
 					,UNIQUE KEY (`${fields.fieldName}`)
 				</if>
 			</foreach>
-			);
 		</foreach>
 
 	</select>
 	
 	<!-- 验证表是否存在 -->
-	<select id="findTableCountByTableName" resultType="java.lang.Integer" parameterType="String">
-		select count(1) from information_schema.tables
-		where table_name = #{tableName}
+	<select id="findTableCountByTableName" resultType="java.lang.String" parameterType="String">
+		select table_schema from information_schema.tables
+		where table_name = #{tableName} and table_schema = (select database())
 	</select>
 	
 	<!--&lt;!&ndash; 根据表名查询表的结构 &ndash;&gt;-->

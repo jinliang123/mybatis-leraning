@@ -4,7 +4,7 @@ spring:
   application:
     name: mybatis-learning
   datasource:
-    url: jdbc:mysql://localhost:3306/mybatis_learning?characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/mybatis_learning?allowMultiQueries=true
     username: root
     password: root
 mybatis:

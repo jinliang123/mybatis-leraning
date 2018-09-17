@@ -27,7 +27,7 @@ public interface CreateMysqlTablesMapper {
 	 * @param tableName
 	 * @return
 	 */
-	public int findTableCountByTableName(@Param("tableName") String tableName);
+	public String findTableCountByTableName(@Param("tableName") String tableName);
 	
 	/**
 	 * 根据表名查询库中该表的字段结构等信息

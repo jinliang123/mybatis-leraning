@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.sql.JDBCType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +107,7 @@ public class OperateTableMapperTest {
         List<TableColumn> columns = new ArrayList<>();
         TableColumn tableColumn = new TableColumn();
         tableColumn.setFieldName("id");
-        tableColumn.setFieldType("BIGINT");
+        tableColumn.setFieldType(JDBCType.INTEGER.getName());
         tableColumn.setFieldLength(20);
         tableColumn.setFieldIsPrimaryKey(true);
         tableColumn.setFieldIsAutoIncrement(true);
@@ -118,16 +119,17 @@ public class OperateTableMapperTest {
         columns.add(tableColumn);
         TableColumn tableColumn1 = new TableColumn();
         tableColumn1.setFieldName("name");
-        tableColumn1.setFieldType("VARCHAR");
+        tableColumn1.setFieldType(JDBCType.VARCHAR.getName());
         tableColumn1.setFieldLength(20);
         tableColumn1.setFileTypeLength(1);
         tableColumn1.setFieldComment("名称");
-        tableColumn1.setFieldDefaultValue("test");
-//        tableColumn1.setFieldIsNull(true);
+//        tableColumn1.setFieldDefaultValue("test");
+        tableColumn1.setFieldIsNull(true);
 
         tableColumn1.setFieldIsUnique(true);
         columns.add(tableColumn1);
         tableMap.put("iam_user",columns);
+        tableMap.put("iam_role",columns);
         tablesMapper.createTable(tableMap);
     }
 
@@ -192,7 +194,7 @@ public class OperateTableMapperTest {
     @Test
     public void checkTable(){
         String tableName = "iam_user";
-        int tableCountByTableName = tablesMapper.findTableCountByTableName(tableName);
+        String tableCountByTableName = tablesMapper.findTableCountByTableName(tableName);
         System.out.println(tableCountByTableName);
 
     }
